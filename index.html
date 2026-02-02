@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>I’m Sorry</title>
+  <meta name="description" content="A simple apology page." />
+  <style>
+    :root { --bg1:#0f1020; --bg2:#1a1030; --card:#ffffff12; --text:#fff; --muted:#ffffffb3; }
+    *{box-sizing:border-box} body{
+      margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--text); min-height:100vh; display:grid; place-items:center;
+      background: radial-gradient(1200px 600px at 20% 10%, #ff5aa530, transparent 60%),
+                  radial-gradient(900px 500px at 80% 30%, #7c5cff30, transparent 60%),
+                  linear-gradient(135deg, var(--bg1), var(--bg2));
+      overflow:hidden;
+    }
+    .wrap{width:min(720px, 92vw); padding:24px;}
+    .card{
+      position:relative;
+      background:linear-gradient(180deg, #ffffff18, #ffffff0a);
+      border:1px solid #ffffff26;
+      border-radius:24px;
+      padding:28px 22px;
+      box-shadow: 0 24px 60px #00000055;
+      backdrop-filter: blur(10px);
+    }
+    h1{margin:0 0 8px; font-size:clamp(28px, 5vw, 42px); letter-spacing:-0.02em;}
+    p{margin:10px 0; color:var(--muted); font-size:clamp(15px, 2.6vw, 18px); line-height:1.55;}
+    .tag{display:inline-flex; gap:8px; align-items:center; padding:8px 12px; border-radius:999px;
+      background:#ffffff12; border:1px solid #ffffff22; color:#fff; font-size:14px; margin-bottom:14px;}
+    .btns{display:flex; flex-wrap:wrap; gap:10px; margin-top:18px;}
+    button{
+      border:0; padding:12px 14px; border-radius:14px; cursor:pointer;
+      font-weight:650; font-size:15px;
+      transition: transform .06s ease, filter .2s ease;
+    }
+    button:active{transform:scale(.98)}
+    .primary{background:linear-gradient(135deg,#ff4fa8,#ff8bd1); color:#1b0b14;}
+    .ghost{background:#ffffff14; color:#fff; border:1px solid #ffffff22;}
+    .small{font-size:13px; padding:10px 12px; font-weight:600}
+    .footer{margin-top:16px; font-size:13px; color:#ffffffa8}
+    .note{margin-top:14px; padding:12px 14px; background:#0000002c; border:1px solid #ffffff1f; border-radius:16px;}
+    .floating{
+      position:absolute; inset:0; pointer-events:none; opacity:.6;
+    }
+    .dot{
+      position:absolute; width:8px; height:8px; border-radius:999px; background:#ffffff33;
+      animation: float 9s linear infinite;
+    }
+    @keyframes float{
+      from{transform:translateY(30vh) translateX(0); opacity:0}
+      15%{opacity:.7}
+      to{transform:translateY(-120vh) translateX(18vw); opacity:0}
+    }
+    .reply{
+      margin-top:12px; display:none;
+    }
+    .reply.show{display:block}
+    .inputRow{display:flex; gap:10px; flex-wrap:wrap; margin-top:10px}
+    input{
+      flex:1 1 220px;
+      padding:12px 12px; border-radius:14px;
+      border:1px solid #ffffff22; background:#ffffff10; color:#fff;
+      outline:none;
+    }
+    a.copy{
+      display:inline-flex; align-items:center; gap:8px;
+      margin-top:10px; color:#fff; text-decoration:none;
+      padding:10px 12px; border-radius:14px;
+      border:1px solid #ffffff22; background:#ffffff12;
+      font-size:14px;
+    }
+    a.copy:hover{filter:brightness(1.12)}
+  </style>
+</head>
+<body>
+  <div class="floating" aria-hidden="true" id="dots"></div>
+
+  <main class="wrap">
+    <section class="card">
+
+      <div class="tag">🙏 <span id="toLine">For you</span></div>
+      <h1>I’m sorry.</h1>
+
+      <p>
+        I know I upset you, and I really regret it.
+        That was never my intention.
+      </p>
+      <p>
+        I respect you and I care about how you feel.
+        I just wanted to say sorry properly and be honest.
+      </p>
+
+      <div class="note">
+        <p style="margin:0">
+          <strong>Can we talk?</strong><br />
+          When you’re ready, I’m here to listen and fix things calmly.
+        </p>
+      </div>
+
+      <div class="btns">
+        <button class="primary" id="forgiveBtn">It’s okay 👍</button>
+        <button class="ghost" id="hugBtn">I need some time 🤍</button>
+      </div>
+
+      <div class="reply" id="reply">
+        <p id="replyText" style="margin-top:10px"></p>
+        <a class="copy" href="#" id="copyBtn">📋 Copy message</a>
+        <p class="footer">Thanks for reading.</p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const dots = document.getElementById('dots');
+    for (let i = 0; i < 20; i++) {
+      const d = document.createElement('div');
+      d.className = 'dot';
+      d.style.left = Math.random() * 100 + 'vw';
+      d.style.top = (60 + Math.random() * 80) + 'vh';
+      d.style.animationDelay = (-Math.random() * 9) + 's';
+      d.style.width = d.style.height = (6 + Math.random()*8) + 'px';
+      dots.appendChild(d);
+    }
+
+    const reply = document.getElementById('reply');
+    const replyText  = document.getElementById('replyText');
+    const forgiveBtn = document.getElementById('forgiveBtn');
+    const hugBtn     = document.getElementById('hugBtn');
+    const copyBtn    = document.getElementById('copyBtn');
+
+    function showReply(text) {
+      replyText.textContent = text;
+      reply.classList.add('show');
+      reply.scrollIntoView({behavior:'smooth', block:'nearest'});
+    }
+
+    forgiveBtn.addEventListener('click', () => {
+      showReply("Thank you for understanding. I really appreciate it and I’ll do better.");
+    });
+
+    hugBtn.addEventListener('click', () => {
+      showReply("That’s okay. Take your time. I’ll be here when you’re ready to talk.");
+    });
+
+    copyBtn.addEventListener('click', async (e) => {
+      e.preventDefault();
+      const msg = replyText.textContent || "I just wanted to say sorry and be honest with you.";
+      try {
+        await navigator.clipboard.writeText(msg);
+        copyBtn.textContent = '✅ Copied';
+        setTimeout(() => (copyBtn.textContent = '📋 Copy message'), 1500);
+      } catch {
+        alert('Copy failed. Please copy manually:\n\n' + msg);
+      }
+    });
+  </script>
+</body>
+</html>
